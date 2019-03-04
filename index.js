@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 // const logger = require('./middleware/logger')
 const commentsRouter = require('./routes/comments');
 
@@ -19,9 +20,11 @@ app.use(express.urlencoded({
   extended: false
 }));
 
+// cors middleware
+app.use(cors());
+
 // logger middleware
 // app.use(logger);
-
 
 // setup static middleware
 app.use(express.static(path.join(__dirname, 'public')));
