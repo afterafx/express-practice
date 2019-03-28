@@ -2,8 +2,15 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const mongoose = require('mongoose');
 // const logger = require('./middleware/logger')
 const commentsRouter = require('./routes/comments');
+const authRouter = require('./routes/auth');
+
+mongoose.connect(
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/message-board?retryWrites=true`,
+  { useNewUrlParser: true }
+);
 
 const app = express();
 
@@ -16,21 +23,24 @@ const app = express();
 // body parser middleware
 app.use(express.json());
 // form data
-app.use(express.urlencoded({
-  extended: false
-}));
+app.use(
+  express.urlencoded({
+    extended: false,
+  })
+);
 
-// cors middleware
+// cors middleware =================================
 app.use(cors());
 
 // logger middleware
 // app.use(logger);
 
-// setup static middleware
+// setup static middleware ==========================
 app.use(express.static(path.join(__dirname, 'public')));
 
-// routing
+// routing ==========================================
 app.use('/api/comments', commentsRouter);
+app.use('/api/auth', authRouter);
 
 const PORT = process.env.PORT || 5000;
 
