@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const passport = require('passport');
+const JwtStrategy = require('./passport');
 // const logger = require('./middleware/logger')
 const commentsRouter = require('./routes/comments');
 const authRouter = require('./routes/auth');
@@ -37,6 +39,10 @@ app.use(cors());
 
 // setup static middleware ==========================
 app.use(express.static(path.join(__dirname, 'public')));
+
+// passport
+app.use(passport.initialize());
+passport.use(JwtStrategy);
 
 // routing ==========================================
 app.use('/api/comments', commentsRouter);

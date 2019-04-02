@@ -14,6 +14,10 @@ const schema = mongoose.Schema(
   }
 );
 
+schema.pre('find', function() {
+  this.populate('user', '-password');
+});
+
 const Comment = mongoose.model('comment', schema);
 
 module.exports = Comment;
